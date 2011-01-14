@@ -37,6 +37,12 @@ module SampleApp
     config.encoding = "utf-8"
 
     # Configure sensitive parameters which will be filtered from the log file.
+    if Rails.env.test?
+      initializer :after => :initialize_dependency_mechanism do
+        # Work around initializer in railties/lib/rails/application/bootstrap.rb
+        ActiveSupport::Dependencies.mechanism = :load
+      end
+    end
     config.filter_parameters += [:password]
   end
 end

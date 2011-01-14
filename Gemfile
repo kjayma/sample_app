@@ -16,6 +16,8 @@ group :test do
   gem 'webrat', '0.7.1'
   gem 'spork', '0.8.4'
   gem 'factory_girl_rails', '1.0'
+  gem 'spork', '0.8.4' 
+
 end
 
 # Bundle edge Rails instead:

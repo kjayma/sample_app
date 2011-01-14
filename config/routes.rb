@@ -1,7 +1,10 @@
 SampleApp::Application.routes.draw do
+  
   get "pages/home"
 
   get "pages/contact"
+
+  get "pages/about"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -35,7 +38,7 @@ SampleApp::Application.routes.draw do
   #     resource :seller
   #   end
 
-  # Sample resource route with more complex sub-resources
+  # Sample resource route with more complex suhomeb-resources
   #   resources :products do
   #     resources :comments
   #     resources :sales do
@@ -60,3 +63,4 @@ SampleApp::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
 end
+
