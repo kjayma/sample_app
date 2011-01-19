@@ -28,16 +28,25 @@ class User < ActiveRecord::Base
 
   before_save :encrypt_password
 
-  def has_password?(submitted_password)
-    encrypted_password == encrypt(submitted_password)
-  end
-  6
+  #class method - you can use on the class (User) but not the object (user)
+  # this is useful since we can use this to instantiate a user object from the class
   def self.authenticate(email, submitted_password)
     user = find_by_email(email)
     return nil  if user.nil?
     return user if user.has_password?(submitted_password)
   end
+  
+  def self.authenticate_with_salt(id, cookie_salt)
+    user = find_by_id(id)
+    return nil  if user.nil?
+    return user if user.salt == cookie_salt
+  end
 
+  #method - you can use on the object (user) but not the class (User)
+  def has_password?(submitted_password)
+    encrypted_password == encrypt(submitted_password)
+  end
+  
   private
 
     def encrypt_password
