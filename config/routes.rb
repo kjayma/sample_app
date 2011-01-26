@@ -2,6 +2,12 @@ SampleApp::Application.routes.draw do
   get "sessions/new"
 
   resources :users
+  # rails automatic resource mapping:
+  # http request        url               action    
+  # GET                 /sessions         new
+  # POST                /sessions         create
+  # DELETE              /sessions/1       destroy
+  # match provides alternate named routes
   resources :sessions, :only => [:new, :create, :destroy]
 
   

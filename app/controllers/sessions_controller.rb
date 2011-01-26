@@ -12,10 +12,14 @@ class SessionsController < ApplicationController
       @title = "Sign in"
       render 'new'
     else
+      # sign_in and redirect_back_or methods are located in sessions_helper
+      # sign_in sets the cookies with the user_id and salt of the signed_in user
+      # and also set the User.current_user class variable.
       sign_in user
-      redirect_to user
+      # redirect_back_or redirects to the original page before sign_in was forced, or
+      # goes back to a default page if user signed in directly.
+      redirect_back_or user
     end
-
   end
 
   def destroy

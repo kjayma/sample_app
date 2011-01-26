@@ -1,6 +1,11 @@
 <h1>Sign in</h1>
 
 <%= form_for(:session, :url => sessions_path) do |f| %>
+<!--  sessions_path defaults to /sessions automatically based on the resources entry
+      in routes.db.  Since its a form, POST is assumed.  the combination of 
+      /sessions path and a POST action will result in Rails automagically trying
+      to call a new method for the specified resource - i.e. sessions.create
+-->
   <div class="field">
     <%= f.label :email %><br />
     <%= f.text_field :email %>
