@@ -42,7 +42,7 @@ describe UsersController do
         end
       end
       
-      it "should paginage  users" do
+      it "should paginate users" do
         get :index
         response.should have_selector("div.pagination")
         response.should have_selector("span.disabled", :content => "Previous")
@@ -50,6 +50,22 @@ describe UsersController do
                                             :content => "2")
         response.should have_selector("a",  :href => "/users?page=2", 
                                             :content => "Next")
+      end
+      
+      it "should show delete for admin users" do
+        admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(admin)
+        get :index
+        response.should have_selector("a", :href => "/users/2",
+                                               :'data-method'=>"delete")
+      end
+      
+      it "should not show delete for non-admin users" do
+        admin = Factory(:user, :email => "admin@example.com", :admin => false)
+        test_sign_in(admin)
+        get :index
+        response.should_not have_selector("a", :href => "/users/2",
+                                               :'data-method'=>"delete")
       end
     end
   end
@@ -328,19 +344,26 @@ describe UsersController do
     describe "as an admin user" do
 
       before(:each) do
-        admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(admin)
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
       end
 
       it "should destroy the user" do
         lambda do
-          delete :destroy, :id => @user
+          delete :destroy, :id => @user.id
         end.should change(User, :count).by(-1)
       end
 
       it "should redirect to the users page" do
-        delete :destroy, :id => @user
+        delete :destroy, :id => @user.id
         response.should redirect_to(users_path)
+      end
+      
+      it "should not destroy itself" do
+        lambda do
+          delete :destroy, :id => @admin.id
+        end.should_not change(User, :count).by(-1)   
+        flash[:error].should =~ /cannot destroy/i
       end
     end
   end 
