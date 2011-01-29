@@ -26,7 +26,12 @@ module SessionsHelper
     # when not signed_in ... deny access
     !current_user.nil?
   end
-  
+
+  def authenticate
+    # deny_access will redirect to the signon page.
+      deny_access unless signed_in?
+  end
+
   def deny_access
     # store the current path before redirecting
     store_location

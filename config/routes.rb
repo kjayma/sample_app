@@ -9,6 +9,7 @@ SampleApp::Application.routes.draw do
   # DELETE              /sessions/1       destroy
   # match provides alternate named routes
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :microposts, :only => [:create, :destroy]
 
   
   match '/signup',  :to => 'users#new'

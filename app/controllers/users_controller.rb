@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   
   before_filter :authenticate, :only =>[:edit, :update, :index, :destroy]
-  # Note: this authenticate method is lower in the UsersController code, but
+  # Note: this authenticate method is helpers/session_helpers, but
   # there is another authenticate located in the User.rb model.  This authenticate
   # ensures the user is signed in.  If the user is not already signed in, he/she
   # is directed to the sign-in page.  After the user fills in the sign in page,
@@ -33,6 +33,7 @@ class UsersController < ApplicationController
 
  def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(:page => params[:page])
     @title = @user.name
  end
 
@@ -96,12 +97,6 @@ end
 
   private
   
-    def authenticate
-    # deny_access and signed_in? are methods in helpers/session_helpers
-    # deny_access will redirect to the signon page.
-      deny_access unless signed_in?
-    end
-
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_path) unless current_user?(@user)
